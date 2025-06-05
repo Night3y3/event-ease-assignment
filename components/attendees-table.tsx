@@ -79,8 +79,8 @@ export function AttendeesTable({ attendees, isAdmin = false }: AttendeesTablePro
     return (
         <div className="space-y-4">
             {/* Filters and Search */}
-            <div className="flex flex-col sm:flex-row gap-4">
-                <div className="relative flex-1">
+            <div className="flex flex-col gap-4">
+                <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
                         placeholder="Search attendees, emails, or events..."
@@ -90,25 +90,27 @@ export function AttendeesTable({ attendees, isAdmin = false }: AttendeesTablePro
                     />
                 </div>
 
-                <Select value={eventFilter} onValueChange={setEventFilter}>
-                    <SelectTrigger className="w-full sm:w-[200px]">
-                        <Filter className="h-4 w-4 mr-2" />
-                        <SelectValue placeholder="Filter by event" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="all">All Events</SelectItem>
-                        {uniqueEvents.map((event) => (
-                            <SelectItem key={event!.id} value={event!.id}>
-                                {event!.title}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
+                <div className="flex flex-col sm:flex-row gap-2">
+                    <Select value={eventFilter} onValueChange={setEventFilter}>
+                        <SelectTrigger className="w-full sm:w-[200px]">
+                            <Filter className="h-4 w-4 mr-2" />
+                            <SelectValue placeholder="Filter by event" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">All Events</SelectItem>
+                            {uniqueEvents.map((event) => (
+                                <SelectItem key={event!.id} value={event!.id}>
+                                    {event!.title}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
 
-                <Button onClick={handleExportAll} disabled={isExporting} variant="outline">
-                    <Download className="mr-2 h-4 w-4" />
-                    {isExporting ? "Exporting..." : "Export All"}
-                </Button>
+                    <Button onClick={handleExportAll} disabled={isExporting} variant="outline" className="w-full sm:w-auto">
+                        <Download className="mr-2 h-4 w-4" />
+                        {isExporting ? "Exporting..." : "Export All"}
+                    </Button>
+                </div>
             </div>
 
             {/* Results count */}
@@ -116,8 +118,39 @@ export function AttendeesTable({ attendees, isAdmin = false }: AttendeesTablePro
                 Showing {filteredAttendees.length} of {attendees.length} attendees
             </div>
 
-            {/* Table */}
-            <div className="rounded-md border">
+            {/* Mobile Card View */}
+            <div className="block md:hidden space-y-4">
+                {filteredAttendees.length === 0 ? (
+                    <div className="text-center py-8">
+                        <p className="text-muted-foreground">No attendees found.</p>
+                    </div>
+                ) : (
+                    filteredAttendees.map((attendee) => (
+                        <div key={attendee.id} className="border rounded-lg p-4 space-y-3">
+                            <div className="space-y-1">
+                                <h3 className="font-medium">{attendee.name}</h3>
+                                <p className="text-sm text-muted-foreground">{attendee.email}</p>
+                                <p className="text-sm font-medium">{attendee.event.title}</p>
+                            </div>
+                            <div className="flex items-center justify-between text-sm">
+                                <span className="text-muted-foreground">{formatDate(attendee.createdAt)}</span>
+                                <Badge variant={new Date(attendee.event.date) > new Date() ? "default" : "secondary"}>
+                                    {new Date(attendee.event.date) > new Date() ? "Upcoming" : "Past"}
+                                </Badge>
+                            </div>
+                            {isAdmin && (
+                                <div className="text-xs text-muted-foreground border-t pt-2">
+                                    <div>Organizer: {attendee.event.user.name}</div>
+                                    <div>{attendee.event.user.email}</div>
+                                </div>
+                            )}
+                        </div>
+                    ))
+                )}
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden md:block rounded-md border">
                 <Table>
                     <TableHeader>
                         <TableRow>

@@ -30,7 +30,7 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1 container py-8">
+      <main className="flex-1 container py-6 sm:py-8">
         <PublicEventDetail event={event} />
       </main>
     </div>

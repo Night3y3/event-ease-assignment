@@ -114,7 +114,7 @@ export function RSVPForm({ event }: RSVPFormProps) {
         {addToCalendar && (
           <CardContent>
             <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-md flex items-center gap-2">
-              <Calendar className="h-5 w-5 text-green-600" />
+              <Calendar className="h-5 w-5 text-green-600 flex-shrink-0" />
               <p className="text-sm">This event has been added to your Google Calendar.</p>
             </div>
           </CardContent>

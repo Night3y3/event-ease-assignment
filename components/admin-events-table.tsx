@@ -148,8 +148,8 @@ export function AdminEventsTable({ events }: AdminEventsTableProps) {
     return (
         <div className="space-y-4">
             {/* Filters and Search */}
-            <div className="flex flex-col lg:flex-row gap-4">
-                <div className="relative flex-1">
+            <div className="flex flex-col gap-4">
+                <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
                         placeholder="Search events, organizers, or locations..."
@@ -159,35 +159,37 @@ export function AdminEventsTable({ events }: AdminEventsTableProps) {
                     />
                 </div>
 
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="w-full lg:w-[150px]">
-                        <SelectValue placeholder="Status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="all">All Status</SelectItem>
-                        <SelectItem value="published">Published</SelectItem>
-                        <SelectItem value="draft">Draft</SelectItem>
-                    </SelectContent>
-                </Select>
+                <div className="flex flex-col sm:flex-row gap-2">
+                    <Select value={statusFilter} onValueChange={setStatusFilter}>
+                        <SelectTrigger className="w-full sm:w-[150px]">
+                            <SelectValue placeholder="Status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">All Status</SelectItem>
+                            <SelectItem value="published">Published</SelectItem>
+                            <SelectItem value="draft">Draft</SelectItem>
+                        </SelectContent>
+                    </Select>
 
-                <Select value={organizerFilter} onValueChange={setOrganizerFilter}>
-                    <SelectTrigger className="w-full lg:w-[200px]">
-                        <SelectValue placeholder="Organizer" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="all">All Organizers</SelectItem>
-                        {uniqueOrganizers.map((email) => (
-                            <SelectItem key={email} value={email!}>
-                                {email}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
+                    <Select value={organizerFilter} onValueChange={setOrganizerFilter}>
+                        <SelectTrigger className="w-full sm:w-[200px]">
+                            <SelectValue placeholder="Organizer" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">All Organizers</SelectItem>
+                            {uniqueOrganizers.map((email) => (
+                                <SelectItem key={email} value={email!}>
+                                    {email}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
 
-                <Button onClick={handleExportAll} disabled={isExporting} variant="outline">
-                    <Download className="mr-2 h-4 w-4" />
-                    {isExporting ? "Exporting..." : "Export All"}
-                </Button>
+                    <Button onClick={handleExportAll} disabled={isExporting} variant="outline" className="w-full sm:w-auto">
+                        <Download className="mr-2 h-4 w-4" />
+                        {isExporting ? "Exporting..." : "Export All"}
+                    </Button>
+                </div>
             </div>
 
             {/* Results count */}
@@ -195,8 +197,102 @@ export function AdminEventsTable({ events }: AdminEventsTableProps) {
                 Showing {filteredEvents.length} of {events.length} events
             </div>
 
-            {/* Table */}
-            <div className="rounded-md border overflow-x-auto">
+            {/* Mobile Card View */}
+            <div className="block lg:hidden space-y-4">
+                {filteredEvents.length === 0 ? (
+                    <div className="text-center py-8">
+                        <p className="text-muted-foreground">No events found.</p>
+                    </div>
+                ) : (
+                    filteredEvents.map((event) => (
+                        <div key={event.id} className="border rounded-lg p-4 space-y-3">
+                            <div className="flex items-start justify-between">
+                                <div className="space-y-1 flex-1 min-w-0">
+                                    <h3 className="font-medium truncate">{event.title}</h3>
+                                    <p className="text-sm text-muted-foreground">{formatDate(event.date)}</p>
+                                    <p className="text-xs text-muted-foreground">
+                                        {event.user?.name} • {event.user?.email}
+                                    </p>
+                                </div>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" className="h-8 w-8 p-0 flex-shrink-0">
+                                            <span className="sr-only">Open menu</span>
+                                            <MoreHorizontal className="h-4 w-4" />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end" className="w-[200px]">
+                                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                        <DropdownMenuItem asChild>
+                                            <Link href={`/dashboard/events/${event.id}`}>
+                                                <Eye className="mr-2 h-4 w-4" />
+                                                View Details
+                                            </Link>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem asChild>
+                                            <Link href={`/dashboard/events/${event.id}/edit`}>
+                                                <Edit className="mr-2 h-4 w-4" />
+                                                Edit Event
+                                            </Link>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem asChild>
+                                            <Link href={`/dashboard/events/${event.id}/attendees`}>
+                                                <Users className="mr-2 h-4 w-4" />
+                                                View Attendees
+                                            </Link>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem onClick={() => handleCopyRSVPLink(event)}>
+                                            <Copy className="mr-2 h-4 w-4" />
+                                            Copy RSVP Link
+                                        </DropdownMenuItem>
+                                        {event.published && (
+                                            <DropdownMenuItem asChild>
+                                                <Link href={`/events/${event.id}`} target="_blank">
+                                                    <Eye className="mr-2 h-4 w-4" />
+                                                    View Public Page
+                                                </Link>
+                                            </DropdownMenuItem>
+                                        )}
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem
+                                            onClick={() => handlePublish(event.id, event.published)}
+                                            disabled={isPublishing === event.id}
+                                        >
+                                            <Eye className="mr-2 h-4 w-4" />
+                                            {event.published ? "Unpublish" : "Publish"}
+                                        </DropdownMenuItem>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem
+                                            className="text-destructive focus:text-destructive"
+                                            onClick={() => handleDelete(event.id)}
+                                            disabled={isDeleting === event.id}
+                                        >
+                                            <Trash className="mr-2 h-4 w-4" />
+                                            Delete Event
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                                    <div className="flex items-center gap-1">
+                                        <Users className="h-4 w-4" />
+                                        <span>{event.attendeeCount}</span>
+                                    </div>
+                                    {event.location && <span className="truncate max-w-[100px]">{event.location}</span>}
+                                </div>
+                                <Badge variant={event.published ? "default" : "outline"}>
+                                    {event.published ? "Published" : "Draft"}
+                                </Badge>
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden lg:block rounded-md border overflow-x-auto">
                 <Table>
                     <TableHeader>
                         <TableRow>
