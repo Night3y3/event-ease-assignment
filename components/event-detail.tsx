@@ -44,6 +44,9 @@ export function EventDetail({ event }: EventDetailProps) {
                 <Badge variant={event.published ? "default" : "outline"}>
                   {event.published ? "Published" : "Draft"}
                 </Badge>
+                {!event.published && (
+                  <span className="text-sm text-muted-foreground ml-2">(Not visible to public)</span>
+                )}
               </div>
             </CardContent>
           </Card>

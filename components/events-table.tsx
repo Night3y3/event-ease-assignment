@@ -1,5 +1,7 @@
 "use client"
 
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
+
 import { useState } from "react"
 import type { Event } from "@/lib/types"
 import { formatDate } from "@/lib/utils"
@@ -8,7 +10,6 @@ import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -137,10 +138,27 @@ export function EventsTable({ events }: EventsTableProps) {
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={() => handleCopyLink(event)}>
-                        <Copy className="mr-2 h-4 w-4" />
-                        Copy Link
-                      </DropdownMenuItem>
+                      {event.published && (
+                        <>
+                          <DropdownMenuItem asChild>
+                            <Link href={`/events/${event.id}`} target="_blank">
+                              <Eye className="mr-2 h-4 w-4" />
+                              View Public Page
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleCopyLink(event)}>
+                            <Copy className="mr-2 h-4 w-4" />
+                            Copy Public Link
+                          </DropdownMenuItem>
+                        </>
+                      )}
+                      {!event.published && (
+                        <DropdownMenuItem disabled>
+                          <Eye className="mr-2 h-4 w-4" />
+                          Public Page (Unpublished)
+                        </DropdownMenuItem>
+                      )}
+                      <DropdownMenuSeparator />
                       <DropdownMenuItem
                         onClick={() => handlePublish(event.id, event.published)}
                         disabled={isPublishing === event.id}

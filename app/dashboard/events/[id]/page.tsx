@@ -24,12 +24,14 @@ export default async function EventPage({ params }: EventPageProps) {
       <div className="flex items-center justify-between">
         <DashboardHeader heading={event.title} text="Event details and management" />
         <div className="flex gap-2">
-          <Button variant="outline" asChild>
-            <Link href={`/events/${event.id}`} target="_blank">
-              <Share2 className="mr-2 h-4 w-4" />
-              View Public Page
-            </Link>
-          </Button>
+          {event.published && (
+            <Button variant="outline" asChild>
+              <Link href={`/events/${event.id}`} target="_blank">
+                <Share2 className="mr-2 h-4 w-4" />
+                View Public Page
+              </Link>
+            </Button>
+          )}
           <Button asChild>
             <Link href={`/dashboard/events/${event.id}/edit`}>
               <Edit className="mr-2 h-4 w-4" />

@@ -67,6 +67,7 @@ export function EventForm({ userId, event }: EventFormProps) {
           title: "Event updated",
           description: "Your event has been updated successfully.",
         })
+        router.push(`/dashboard/events/${event.id}`)
       } else {
         const newEvent = await createEvent({
           ...data,

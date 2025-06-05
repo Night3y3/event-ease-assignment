@@ -11,14 +11,17 @@ interface PublicEventPageProps {
 }
 
 export default async function PublicEventPage({ params }: PublicEventPageProps) {
-  const event = await getEventById(params.id)
+  const { id } = await params
+  console.log("id", id)
+  const event = await getEventById(id)
+  console.log("event", event)
 
   if (!event || !event.published) {
     notFound()
   }
 
   // Track page view
-  const headersList = headers()
+  const headersList = await headers()
   const ipAddress = headersList.get("x-forwarded-for") || headersList.get("x-real-ip")
   const userAgent = headersList.get("user-agent")
 

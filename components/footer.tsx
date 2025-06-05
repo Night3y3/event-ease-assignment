@@ -8,7 +8,7 @@ export function Footer() {
         <p className="text-sm text-muted-foreground md:text-base">© 2025 EventEase. All rights reserved.</p>
         <div className="flex items-center gap-4">
           <Link
-            href="https://github.com/yourusername"
+            href="https://github.com/Night3y3"
             target="_blank"
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-foreground"
@@ -17,7 +17,7 @@ export function Footer() {
             <span className="sr-only">GitHub</span>
           </Link>
           <Link
-            href="https://linkedin.com/in/yourusername"
+            href="https://www.linkedin.com/in/sabujghosh"
             target="_blank"
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-foreground"

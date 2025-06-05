@@ -150,7 +150,9 @@ function OptionsField({ control, index }: { control: Control<any>; index: number
         ) : (
           fields.map((option, optionIndex) => (
             <div key={option.id} className="flex items-center gap-2">
-              <div className="bg-muted rounded px-3 py-1 text-sm flex-1">{option.value}</div>
+              <div className="bg-muted rounded px-3 py-1 text-sm flex-1">
+                {Object.values(option).filter(val => val !== option.id).join('')}
+              </div>
               <Button type="button" variant="ghost" size="sm" onClick={() => remove(optionIndex)}>
                 <Trash className="h-3 w-3" />
               </Button>
