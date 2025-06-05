@@ -1,7 +1,11 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
+import { useAuth } from "@/lib/hooks/use-auth"
 import Link from "next/link"
 
 export function HeroSection() {
+  const { user } = useAuth()
   return (
     <section className="w-full py-8 md:py-16 lg:py-24 bg-background">
       <div className="container px-4 md:px-6">
@@ -17,9 +21,9 @@ export function HeroSection() {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 justify-center lg:justify-start">
-              <Button asChild size="lg" className="w-full sm:w-auto">
+              {!user && (<Button asChild size="lg" className="w-full sm:w-auto">
                 <Link href="/register">Get Started</Link>
-              </Button>
+              </Button>)}
               <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
                 <Link href="/events">Browse Events</Link>
               </Button>
