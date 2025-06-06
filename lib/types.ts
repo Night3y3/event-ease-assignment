@@ -33,9 +33,8 @@ export interface Event {
 
 export interface CustomField {
   name: string;
-  type: "text" | "number" | "checkbox" | "select";
+  type: "text" | "number";
   required: boolean;
-  options?: string[];
 }
 
 export interface RSVP {

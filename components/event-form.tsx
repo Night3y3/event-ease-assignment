@@ -26,9 +26,8 @@ const eventSchema = z.object({
     .array(
       z.object({
         name: z.string().min(1, { message: "Field name is required" }),
-        type: z.enum(["text", "number", "checkbox", "select"]),
+        type: z.enum(["text", "number"]),
         required: z.boolean().default(false),
-        options: z.array(z.string()).optional(),
       }),
     )
     .default([]),
@@ -37,7 +36,7 @@ const eventSchema = z.object({
 type EventFormValues = z.infer<typeof eventSchema>
 
 interface EventFormProps {
-  userId: string
+  userId: string | undefined
   event?: Event
 }
 
@@ -91,7 +90,7 @@ export function EventForm({ userId, event }: EventFormProps) {
   }
 
   return (
-    <Card>
+    <Card className="w-full max-w-screen-md mx-auto px-4 sm:px-6">
       <CardContent className="pt-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -102,25 +101,26 @@ export function EventForm({ userId, event }: EventFormProps) {
                 <FormItem>
                   <FormLabel>Event Title</FormLabel>
                   <FormControl>
-                    <Input placeholder="Annual Conference 2025" {...field} />
+                    <Input
+                      placeholder="Annual Conference 2025"
+                      className="w-full"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
                 name="date"
                 render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel className="text-sm">Date</FormLabel>
+                  <FormItem>
+                    <FormLabel>Date</FormLabel>
                     <FormControl>
-                      <Input
-                        type="date"
-                        {...field}
-                        className="w-full text-sm px-3 py-2 rounded-md border border-input bg-background shadow-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
-                      />
+                      <Input type="date" className="w-full" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -133,13 +133,18 @@ export function EventForm({ userId, event }: EventFormProps) {
                   <FormItem>
                     <FormLabel>Location</FormLabel>
                     <FormControl>
-                      <Input placeholder="City Convention Center" {...field} />
+                      <Input
+                        placeholder="City Convention Center"
+                        className="w-full"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
+
             <FormField
               control={form.control}
               name="description"
@@ -147,7 +152,11 @@ export function EventForm({ userId, event }: EventFormProps) {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Describe your event..." className="min-h-32" {...field} />
+                    <Textarea
+                      placeholder="Describe your event..."
+                      className="min-h-32 w-full"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -162,21 +171,42 @@ export function EventForm({ userId, event }: EventFormProps) {
               render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                   <FormControl>
-                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
                   </FormControl>
                   <div className="space-y-1 leading-none">
                     <FormLabel>Publish Event</FormLabel>
-                    <FormDescription>Make this event visible to the public</FormDescription>
+                    <FormDescription>
+                      Make this event visible to the public
+                    </FormDescription>
                   </div>
                 </FormItem>
               )}
             />
-            <div className="flex justify-end gap-4">
-              <Button type="button" variant="outline" onClick={() => router.back()}>
+
+            <div className="flex flex-col-reverse sm:flex-row justify-end gap-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.back()}
+                className="w-full sm:w-auto"
+              >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? (event ? "Updating..." : "Creating...") : event ? "Update Event" : "Create Event"}
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full sm:w-auto"
+              >
+                {isSubmitting
+                  ? event
+                    ? "Updating..."
+                    : "Creating..."
+                  : event
+                    ? "Update Event"
+                    : "Create Event"}
               </Button>
             </div>
           </form>

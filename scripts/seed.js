@@ -1,13 +1,13 @@
-const { PrismaClient } = require("@prisma/client")
-const bcrypt = require("bcryptjs")
+const { PrismaClient } = require("@prisma/client");
+const bcrypt = require("bcryptjs");
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 async function main() {
-  console.log("🌱 Seeding database...")
+  console.log("🌱 Seeding database...");
 
   // Create admin user
-  const adminPassword = await bcrypt.hash("admin123", 12)
+  const adminPassword = await bcrypt.hash("admin123", 12);
   const admin = await prisma.user.upsert({
     where: { email: "admin@eventease.com" },
     update: {},
@@ -17,10 +17,10 @@ async function main() {
       password: adminPassword,
       role: "ADMIN",
     },
-  })
+  });
 
   // Create event owner user
-  const ownerPassword = await bcrypt.hash("owner123", 12)
+  const ownerPassword = await bcrypt.hash("owner123", 12);
   const owner = await prisma.user.upsert({
     where: { email: "owner@eventease.com" },
     update: {},
@@ -30,7 +30,7 @@ async function main() {
       password: ownerPassword,
       role: "EVENT_OWNER",
     },
-  })
+  });
 
   // Create sample events
   const event1 = await prisma.event.upsert({
@@ -47,20 +47,18 @@ async function main() {
       userId: owner.id,
       customFields: [
         {
-          name: "Dietary Requirements",
-          type: "select",
+          name: "Phone Number",
+          type: "text",
           required: false,
-          options: ["None", "Vegetarian", "Vegan", "Gluten-free"],
         },
         {
-          name: "T-shirt Size",
-          type: "select",
+          name: "Years of Experience",
+          type: "number",
           required: true,
-          options: ["XS", "S", "M", "L", "XL", "XXL"],
         },
       ],
     },
-  })
+  });
 
   const event2 = await prisma.event.upsert({
     where: { id: "sample-event-2" },
@@ -70,7 +68,8 @@ async function main() {
       title: "Startup Networking Event",
       date: new Date("2025-02-20T18:00:00Z"),
       location: "Downtown Business Center",
-      description: "Connect with fellow entrepreneurs and investors in this exclusive networking event.",
+      description:
+        "Connect with fellow entrepreneurs and investors in this exclusive networking event.",
       published: true,
       userId: owner.id,
       customFields: [
@@ -80,14 +79,13 @@ async function main() {
           required: false,
         },
         {
-          name: "Industry",
-          type: "select",
+          name: "Number of Employees",
+          type: "number",
           required: false,
-          options: ["Technology", "Healthcare", "Finance", "Education", "Other"],
         },
       ],
     },
-  })
+  });
 
   // Create sample RSVPs
   await prisma.rSVP.createMany({
@@ -97,8 +95,8 @@ async function main() {
         name: "Alice Johnson",
         email: "alice@example.com",
         customFieldData: {
-          "Dietary Requirements": "Vegetarian",
-          "T-shirt Size": "M",
+          "Phone Number": "+1-555-0123",
+          "Years of Experience": "5",
         },
       },
       {
@@ -106,8 +104,8 @@ async function main() {
         name: "Bob Wilson",
         email: "bob@example.com",
         customFieldData: {
-          "Dietary Requirements": "None",
-          "T-shirt Size": "L",
+          "Phone Number": "+1-555-0456",
+          "Years of Experience": "8",
         },
       },
       {
@@ -116,24 +114,24 @@ async function main() {
         email: "carol@example.com",
         customFieldData: {
           "Company Name": "TechStart Inc.",
-          Industry: "Technology",
+          "Number of Employees": "25",
         },
       },
     ],
     skipDuplicates: true,
-  })
+  });
 
-  console.log("✅ Database seeded successfully!")
-  console.log("\n📧 Sample login credentials:")
-  console.log("Admin: admin@eventease.com / admin123")
-  console.log("Event Owner: owner@eventease.com / owner123")
+  console.log("✅ Database seeded successfully!");
+  console.log("\n📧 Sample login credentials:");
+  console.log("Admin: admin@eventease.com / admin123");
+  console.log("Event Owner: owner@eventease.com / owner123");
 }
 
 main()
   .catch((e) => {
-    console.error(e)
-    process.exit(1)
+    console.error(e);
+    process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect()
-  })
+    await prisma.$disconnect();
+  });

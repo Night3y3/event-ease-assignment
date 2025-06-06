@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useToast } from "@/hooks/use-toast"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import type { Event } from "@/lib/types"
@@ -49,16 +48,6 @@ export function RSVPForm({ event }: RSVPFormProps) {
             ? z.string().min(1, { message: `${field.name} is required` })
             : z.string().optional()
           break
-        case "checkbox":
-          fieldSchema = field.required
-            ? z.boolean().refine((val) => val === true, { message: `${field.name} is required` })
-            : z.boolean().optional()
-          break
-        case "select":
-          fieldSchema = field.required
-            ? z.string().min(1, { message: `${field.name} is required` })
-            : z.string().optional()
-          break
         default:
           fieldSchema = z.string().optional()
       }
@@ -77,7 +66,7 @@ export function RSVPForm({ event }: RSVPFormProps) {
       ...event.customFields?.reduce(
         (acc, field) => ({
           ...acc,
-          [field.name]: field.type === "checkbox" ? false : "",
+          [field.name]: "",
         }),
         {},
       ),
@@ -174,26 +163,6 @@ export function RSVPForm({ event }: RSVPFormProps) {
                     <FormControl>
                       {field.type === "text" && <Input {...formField} />}
                       {field.type === "number" && <Input type="number" {...formField} />}
-                      {field.type === "checkbox" && (
-                        <div className="flex items-center space-x-2">
-                          <Checkbox checked={formField.value} onCheckedChange={formField.onChange} />
-                          <span className="text-sm">{field.name}</span>
-                        </div>
-                      )}
-                      {field.type === "select" && field.options && (
-                        <Select onValueChange={formField.onChange} value={formField.value}>
-                          <SelectTrigger>
-                            <SelectValue placeholder={`Select ${field.name}`} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {field.options.map((option, optionIndex) => (
-                              <SelectItem key={optionIndex} value={option}>
-                                {option}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      )}
                     </FormControl>
                     <FormMessage />
                   </FormItem>
