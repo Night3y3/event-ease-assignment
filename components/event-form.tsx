@@ -113,10 +113,14 @@ export function EventForm({ userId, event }: EventFormProps) {
                 control={form.control}
                 name="date"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date</FormLabel>
+                  <FormItem className="w-full">
+                    <FormLabel className="text-sm">Date</FormLabel>
                     <FormControl>
-                      <Input type="date" {...field} />
+                      <Input
+                        type="date"
+                        {...field}
+                        className="w-full text-sm px-3 py-2 rounded-md border border-input bg-background shadow-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
