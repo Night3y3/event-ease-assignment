@@ -5,7 +5,7 @@ import { redirect } from "next/navigation"
 import { getServerAuthSession } from "@/lib/get-server-session"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
-import { Menu } from "lucide-react"
+import { Menu, PlusCircle } from "lucide-react"
 
 export default async function DashboardLayout({
   children,
@@ -30,7 +30,7 @@ export default async function DashboardLayout({
         </aside>
 
         {/* Mobile Navigation */}
-        <div className="lg:hidden mb-4">
+        <div className="lg:hidden mb-4 flex items-center justify-between">
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="outline" size="sm">
@@ -44,6 +44,13 @@ export default async function DashboardLayout({
               </div>
             </SheetContent>
           </Sheet>
+
+          <Button asChild size="sm">
+            <a href="/dashboard/events/new">
+              <PlusCircle className="mr-2 h-4 w-4" />
+              <span>Create</span>
+            </a>
+          </Button>
         </div>
 
         <main className="min-w-0">{children}</main>

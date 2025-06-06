@@ -13,7 +13,8 @@ interface EventPageProps {
 }
 
 export default async function EventPage({ params }: EventPageProps) {
-  const event = await getEventById(params.id)
+  const { id } = await params
+  const event = await getEventById(id)
 
   if (!event) {
     notFound()
@@ -21,9 +22,12 @@ export default async function EventPage({ params }: EventPageProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <DashboardHeader heading={event.title} text="Event details and management" />
-        <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <DashboardHeader
+          heading={event.title}
+          text="Event details and management"
+        />
+        <div className="flex flex-col sm:flex-row gap-2 sm:shrink-0">
           {event.published && (
             <Button variant="outline" asChild>
               <Link href={`/events/${event.id}`} target="_blank">
@@ -40,6 +44,7 @@ export default async function EventPage({ params }: EventPageProps) {
           </Button>
         </div>
       </div>
+
       <EventDetail event={event} />
     </div>
   )

@@ -60,7 +60,7 @@ export function DashboardNav({ user }: DashboardNavProps) {
           </Link>
         )
       })}
-      <Button asChild className="mt-4 w-full">
+      <Button asChild className="mt-4 w-full hidden sm:flex">
         <Link href="/dashboard/events/new">
           <PlusCircle className="mr-2 h-4 w-4 flex-shrink-0" />
           <span className="truncate">Create Event</span>

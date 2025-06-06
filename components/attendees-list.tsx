@@ -13,33 +13,34 @@ export async function AttendeesList({ eventId }: AttendeesListProps) {
   const event = await getEventById(eventId)
 
   return (
-    <Card>
+    <Card className="min-h-[400px] flex flex-col">
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <CardTitle>Attendees ({attendees.length})</CardTitle>
             <CardDescription>People who have RSVP'd to your event</CardDescription>
           </div>
-          {attendees.length > 0 && <ExportAttendeesButton eventId={eventId} eventTitle={event?.title} />}
+          {attendees.length > 0 && (
+            <ExportAttendeesButton eventId={eventId} eventTitle={event?.title} />
+          )}
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-1">
         {attendees.length === 0 ? (
           <div className="text-center py-8">
             <p className="text-muted-foreground">No attendees yet</p>
           </div>
         ) : (
-          <div className="rounded-md border">
+          <div className="rounded-md border overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Name</TableHead>
                   <TableHead>Email</TableHead>
                   <TableHead>RSVP Date</TableHead>
-                  {/* Add custom fields as columns if they exist */}
-                  {event?.customFields &&
-                    event.customFields.length > 0 &&
-                    event.customFields.map((field) => <TableHead key={field.name}>{field.name}</TableHead>)}
+                  {event?.customFields?.map((field) => (
+                    <TableHead key={field.name}>{field.name}</TableHead>
+                  ))}
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -48,12 +49,11 @@ export async function AttendeesList({ eventId }: AttendeesListProps) {
                     <TableCell className="font-medium">{attendee.name}</TableCell>
                     <TableCell>{attendee.email}</TableCell>
                     <TableCell>{formatDate(attendee.createdAt)}</TableCell>
-                    {/* Display custom field values */}
-                    {event?.customFields &&
-                      event.customFields.length > 0 &&
-                      event.customFields.map((field) => (
-                        <TableCell key={field.name}>{attendee.customFieldData?.[field.name] || "-"}</TableCell>
-                      ))}
+                    {event?.customFields?.map((field) => (
+                      <TableCell key={field.name}>
+                        {attendee.customFieldData?.[field.name] || "-"}
+                      </TableCell>
+                    ))}
                   </TableRow>
                 ))}
               </TableBody>

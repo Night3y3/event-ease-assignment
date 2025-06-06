@@ -25,16 +25,16 @@ export function EventList({ events }: EventListProps) {
           href={`/dashboard/events/${event.id}`}
           className="block hover:bg-muted/50 p-4 transition-colors"
         >
-          <div className="flex justify-between items-start">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
             <div>
-              <h3 className="font-medium">{event.title}</h3>
-              <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
-                <div className="flex items-center gap-1">
+              <h3 className="font-medium text-base sm:text-lg">{event.title}</h3>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 mt-2 text-sm text-muted-foreground">
+                <div className="flex items-center gap-1 mb-1 sm:mb-0">
                   <Calendar className="h-4 w-4" />
                   <span>{formatDate(event.date)}</span>
                 </div>
                 {event.location && (
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1 mb-1 sm:mb-0">
                     <MapPin className="h-4 w-4" />
                     <span>{event.location}</span>
                   </div>
@@ -45,7 +45,12 @@ export function EventList({ events }: EventListProps) {
                 </div>
               </div>
             </div>
-            <Badge variant={event.published ? "default" : "outline"}>{event.published ? "Published" : "Draft"}</Badge>
+            <Badge
+              variant={event.published ? "default" : "outline"}
+              className="self-start sm:self-auto"
+            >
+              {event.published ? "Published" : "Draft"}
+            </Badge>
           </div>
         </Link>
       ))}

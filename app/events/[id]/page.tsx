@@ -12,9 +12,7 @@ interface PublicEventPageProps {
 
 export default async function PublicEventPage({ params }: PublicEventPageProps) {
   const { id } = await params
-  console.log("id", id)
   const event = await getEventById(id)
-  console.log("event", event)
 
   if (!event || !event.published) {
     notFound()
@@ -25,7 +23,7 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
   const ipAddress = headersList.get("x-forwarded-for") || headersList.get("x-real-ip")
   const userAgent = headersList.get("user-agent")
 
-  await trackEventView(params.id, ipAddress || undefined, userAgent || undefined)
+  await trackEventView(id, ipAddress || undefined, userAgent || undefined)
 
   return (
     <div className="flex flex-col min-h-screen">
