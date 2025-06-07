@@ -9,12 +9,6 @@ import { Footer } from "@/components/footer"
 
 const inter = Inter({ subsets: ["latin"] })
 
-export const metadata: Metadata = {
-  title: "EventEase",
-  description: "A scalable and intuitive event management solution",
-  generator: 'v0.dev'
-}
-
 export default function RootLayout({
   children,
 }: Readonly<{
