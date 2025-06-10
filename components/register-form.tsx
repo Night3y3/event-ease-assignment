@@ -244,22 +244,23 @@ export function RegisterForm() {
                       Password
                     </FormLabel>
                     <FormControl>
-                      <motion.div
-                        className="relative"
-                        whileFocus={{ scale: 1.02 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                      >
-                        <Input
-                          type={showPassword ? "text" : "password"}
-                          className="pr-10 transition-all duration-300 focus:border-primary/50 focus:shadow-lg focus:shadow-primary/10"
-                          {...field}
-                        />
-                        <motion.button
+                      <div className="relative">
+                        <motion.div
+                          whileFocus={{ scale: 1.02 }}
+                          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                        >
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            className="pr-10 transition-all duration-300 focus:border-primary/50 focus:shadow-lg focus:shadow-primary/10"
+                            {...field}
+                          />
+                        </motion.div>
+                        <button
                           type="button"
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors duration-200 focus:outline-none focus:ring-0 pointer-events-auto"
                           onClick={() => setShowPassword(!showPassword)}
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
+                          tabIndex={-1}
+                          style={{ transform: 'translateY(-50%)', right: '12px' }}
                         >
                           <AnimatePresence mode="wait">
                             {showPassword ? (
@@ -269,6 +270,7 @@ export function RegisterForm() {
                                 animate={{ opacity: 1, rotate: 0 }}
                                 exit={{ opacity: 0, rotate: 90 }}
                                 transition={{ duration: 0.2 }}
+                                className="w-4 h-4 flex items-center justify-center"
                               >
                                 <EyeOff className="w-4 h-4" />
                               </motion.div>
@@ -279,13 +281,14 @@ export function RegisterForm() {
                                 animate={{ opacity: 1, rotate: 0 }}
                                 exit={{ opacity: 0, rotate: 90 }}
                                 transition={{ duration: 0.2 }}
+                                className="w-4 h-4 flex items-center justify-center"
                               >
                                 <Eye className="w-4 h-4" />
                               </motion.div>
                             )}
                           </AnimatePresence>
-                        </motion.button>
-                      </motion.div>
+                        </button>
+                      </div>
                     </FormControl>
 
                     {/* Password Strength Indicator */}
@@ -354,22 +357,23 @@ export function RegisterForm() {
                       Confirm Password
                     </FormLabel>
                     <FormControl>
-                      <motion.div
-                        className="relative"
-                        whileFocus={{ scale: 1.02 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                      >
-                        <Input
-                          type={showConfirmPassword ? "text" : "password"}
-                          className="pr-10 transition-all duration-300 focus:border-primary/50 focus:shadow-lg focus:shadow-primary/10"
-                          {...field}
-                        />
-                        <motion.button
+                      <div className="relative">
+                        <motion.div
+                          whileFocus={{ scale: 1.01 }}
+                          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                        >
+                          <Input
+                            type={showConfirmPassword ? "text" : "password"}
+                            className="pr-10 transition-all duration-300 focus:border-primary/50 focus:shadow-lg focus:shadow-primary/10"
+                            {...field}
+                          />
+                        </motion.div>
+                        <button
                           type="button"
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors duration-200 focus:outline-none focus:ring-0 pointer-events-auto"
                           onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
+                          tabIndex={-1}
+                          style={{ transform: 'translateY(-50%)', right: '12px' }}
                         >
                           <AnimatePresence mode="wait">
                             {showConfirmPassword ? (
@@ -379,6 +383,7 @@ export function RegisterForm() {
                                 animate={{ opacity: 1, rotate: 0 }}
                                 exit={{ opacity: 0, rotate: 90 }}
                                 transition={{ duration: 0.2 }}
+                                className="w-4 h-4 flex items-center justify-center"
                               >
                                 <EyeOff className="w-4 h-4" />
                               </motion.div>
@@ -389,13 +394,14 @@ export function RegisterForm() {
                                 animate={{ opacity: 1, rotate: 0 }}
                                 exit={{ opacity: 0, rotate: 90 }}
                                 transition={{ duration: 0.2 }}
+                                className="w-4 h-4 flex items-center justify-center"
                               >
                                 <Eye className="w-4 h-4" />
                               </motion.div>
                             )}
                           </AnimatePresence>
-                        </motion.button>
-                      </motion.div>
+                        </button>
+                      </div>
                     </FormControl>
                     <AnimatePresence>
                       {form.formState.errors.confirmPassword && (
