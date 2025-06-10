@@ -154,7 +154,7 @@ export function DashboardNav({ user }: DashboardNavProps) {
 
       {/* Create Event Button */}
       <motion.div
-        className="mt-6"
+        className="mt-6 hidden md:block"
         variants={itemVariants}
         whileHover={{ scale: 1.02, y: -2 }}
         whileTap={{ scale: 0.98 }}

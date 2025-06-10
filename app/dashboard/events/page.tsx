@@ -20,12 +20,15 @@ export default async function EventsPage() {
           heading="Events"
           text={isAdmin ? "Manage all events across the platform" : "Create and manage your events."}
         />
-        <Button asChild>
-          <Link href="/dashboard/events/new">
-            <PlusCircle className="mr-2 h-4 w-4" />
-            New Event
-          </Link>
-        </Button>
+        <div className="hidden md:block">
+          <Button asChild>
+            <Link href="/dashboard/events/new">
+              <PlusCircle className="mr-2 h-4 w-4" />
+              New Event
+            </Link>
+          </Button>
+        </div>
+
       </div>
 
       {isAdmin ? <AdminEventsTable events={events} /> : <EventsTable events={events} />}
