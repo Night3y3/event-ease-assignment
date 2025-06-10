@@ -13,51 +13,97 @@ export async function AttendeesList({ eventId }: AttendeesListProps) {
   const event = await getEventById(eventId)
 
   return (
-    <Card className="min-h-[400px] flex flex-col">
-      <CardHeader>
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <CardTitle>Attendees ({attendees.length})</CardTitle>
-            <CardDescription>People who have RSVP'd to your event</CardDescription>
+    <Card className="w-full">
+      <CardHeader className="pb-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="space-y-1">
+            <CardTitle className="text-lg">
+              Attendees ({attendees.length})
+            </CardTitle>
+            <CardDescription>
+              People who have RSVP'd to your event
+            </CardDescription>
           </div>
           {attendees.length > 0 && (
-            <ExportAttendeesButton eventId={eventId} eventTitle={event?.title} />
+            <div className="flex-shrink-0">
+              <ExportAttendeesButton
+                eventId={eventId}
+                eventTitle={event?.title}
+              />
+            </div>
           )}
         </div>
       </CardHeader>
-      <CardContent className="flex-1">
+
+      <CardContent className="px-0 sm:px-6">
         {attendees.length === 0 ? (
-          <div className="text-center py-8">
-            <p className="text-muted-foreground">No attendees yet</p>
+          <div className="text-center py-12 px-6">
+            <div className="mx-auto max-w-sm">
+              <div className="rounded-full bg-muted/50 p-3 w-12 h-12 mx-auto mb-4 flex items-center justify-center">
+                <Users className="h-6 w-6 text-muted-foreground" />
+              </div>
+              <h3 className="text-sm font-medium text-foreground mb-1">
+                No attendees yet
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                Attendees will appear here once they RSVP to your event
+              </p>
+            </div>
           </div>
         ) : (
-          <div className="rounded-md border overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>RSVP Date</TableHead>
-                  {event?.customFields?.map((field) => (
-                    <TableHead key={field.name}>{field.name}</TableHead>
-                  ))}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {attendees.map((attendee) => (
-                  <TableRow key={attendee.id}>
-                    <TableCell className="font-medium">{attendee.name}</TableCell>
-                    <TableCell>{attendee.email}</TableCell>
-                    <TableCell>{formatDate(attendee.createdAt)}</TableCell>
+          <div className="border rounded-lg overflow-hidden">
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-muted/50">
+                    <TableHead className="font-semibold">Name</TableHead>
+                    <TableHead className="font-semibold">Email</TableHead>
+                    <TableHead className="font-semibold whitespace-nowrap">
+                      RSVP Date
+                    </TableHead>
                     {event?.customFields?.map((field) => (
-                      <TableCell key={field.name}>
-                        {attendee.customFieldData?.[field.name] || "-"}
-                      </TableCell>
+                      <TableHead
+                        key={field.name}
+                        className="font-semibold whitespace-nowrap"
+                      >
+                        {field.name}
+                      </TableHead>
                     ))}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {attendees.map((attendee) => (
+                    <TableRow key={attendee.id} className="hover:bg-muted/30">
+                      <TableCell className="font-medium max-w-[200px]">
+                        <div className="truncate" title={attendee.name}>
+                          {attendee.name}
+                        </div>
+                      </TableCell>
+                      <TableCell className="max-w-[250px]">
+                        <div className="truncate" title={attendee.email}>
+                          {attendee.email}
+                        </div>
+                      </TableCell>
+                      <TableCell className="whitespace-nowrap text-sm text-muted-foreground">
+                        {formatDate(attendee.createdAt)}
+                      </TableCell>
+                      {event?.customFields?.map((field) => (
+                        <TableCell key={field.name} className="max-w-[150px]">
+                          <div
+                            className="truncate text-sm"
+                            title={attendee.customFieldData?.[field.name] || "-"}
+                          >
+                            {attendee.customFieldData?.[field.name] || (
+                              <span className="text-muted-foreground">-</span>
+                            )}
+                          </div>
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </div>
         )}
       </CardContent>

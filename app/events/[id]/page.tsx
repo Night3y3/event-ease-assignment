@@ -26,9 +26,9 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
   await trackEventView(id, ipAddress || undefined, userAgent || undefined)
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen w-full">
       <Header />
-      <main className="flex-1 container py-6 sm:py-8">
+      <main className="flex-1 container py-6 sm:py-8 mx-auto w-full">
         <PublicEventDetail event={event} />
       </main>
     </div>
