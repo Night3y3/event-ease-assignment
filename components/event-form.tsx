@@ -90,128 +90,161 @@ export function EventForm({ userId, event }: EventFormProps) {
   }
 
   return (
-    <Card className="w-full max-w-screen-md mx-auto px-4 sm:px-6">
-      <CardContent className="pt-6">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Event Title</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Annual Conference 2025"
-                      className="w-full"
-                      {...field}
+    <div className="w-full min-h-screen bg-background">
+      {/* Container with responsive padding and max-width */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-4 sm:py-6 lg:py-8">
+        <div className="w-full max-w-none lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl mx-auto">
+          <Card className="w-full shadow-lg border-0 sm:border sm:shadow-xl">
+            <CardContent className="p-4 sm:p-6 lg:p-8 xl:p-10">
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6 lg:space-y-8">
+                  {/* Title - Full width on all screens */}
+                  <FormField
+                    control={form.control}
+                    name="title"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <FormLabel className="text-sm sm:text-base font-semibold">
+                          Event Title
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Annual Conference 2025"
+                            className="w-full text-sm sm:text-base h-10 sm:h-11 lg:h-12"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* Date & Location - Responsive grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+                    <FormField
+                      control={form.control}
+                      name="date"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormLabel className="text-sm sm:text-base font-semibold">
+                            Date
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              type="date"
+                              className="w-full text-sm sm:text-base h-10 sm:h-11 lg:h-12"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date</FormLabel>
-                    <FormControl>
-                      <Input type="date" className="w-full" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="location"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Location</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="City Convention Center"
-                        className="w-full"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Describe your event..."
-                      className="min-h-32 w-full"
-                      {...field}
+                    <FormField
+                      control={form.control}
+                      name="location"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormLabel className="text-sm sm:text-base font-semibold">
+                            Location
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="City Convention Center"
+                              className="w-full text-sm sm:text-base h-10 sm:h-11 lg:h-12"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <CustomFieldsSection control={form.control} />
-
-            <FormField
-              control={form.control}
-              name="published"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel>Publish Event</FormLabel>
-                    <FormDescription>
-                      Make this event visible to the public
-                    </FormDescription>
                   </div>
-                </FormItem>
-              )}
-            />
 
-            <div className="flex flex-col-reverse sm:flex-row justify-end gap-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => router.back()}
-                className="w-full sm:w-auto"
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full sm:w-auto"
-              >
-                {isSubmitting
-                  ? event
-                    ? "Updating..."
-                    : "Creating..."
-                  : event
-                    ? "Update Event"
-                    : "Create Event"}
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+                  {/* Description - Full width with responsive height */}
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <FormLabel className="text-sm sm:text-base font-semibold">
+                          Description
+                        </FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Describe your event..."
+                            className="w-full text-sm sm:text-base min-h-[100px] sm:min-h-[120px] lg:min-h-[140px] resize-none"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* Custom Fields - Full width */}
+                  <div className="w-full">
+                    <CustomFieldsSection control={form.control} />
+                  </div>
+
+                  {/* Published Checkbox - Responsive padding */}
+                  <FormField
+                    control={form.control}
+                    name="published"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <div className="flex items-start gap-3 sm:gap-4 rounded-lg border border-border bg-card p-4 sm:p-5 lg:p-6">
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                              className="mt-0.5 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                            />
+                          </FormControl>
+                          <div className="flex-1 space-y-1 leading-none">
+                            <FormLabel className="text-sm sm:text-base font-semibold cursor-pointer">
+                              Publish Event
+                            </FormLabel>
+                            <FormDescription className="text-xs sm:text-sm text-muted-foreground">
+                              Make this event visible to the public
+                            </FormDescription>
+                          </div>
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* Action Buttons - Responsive layout */}
+                  <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 sm:gap-4 pt-4 sm:pt-6">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => router.back()}
+                      className="w-full sm:w-auto sm:min-w-[120px] h-10 sm:h-11 lg:h-12 text-sm sm:text-base font-medium"
+                      disabled={isSubmitting}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full sm:w-auto sm:min-w-[140px] h-10 sm:h-11 lg:h-12 text-sm sm:text-base font-medium"
+                    >
+                      {isSubmitting
+                        ? event
+                          ? "Updating..."
+                          : "Creating..."
+                        : event
+                          ? "Update Event"
+                          : "Create Event"}
+                    </Button>
+                  </div>
+                </form>
+              </Form>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
   )
 }
