@@ -3,6 +3,7 @@ import { formatDate } from "@/lib/utils"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ExportAttendeesButton } from "@/components/export-attendees-button"
+import { Users } from "lucide-react"
 
 interface AttendeesListProps {
   eventId: string
