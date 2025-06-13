@@ -55,6 +55,7 @@ export async function GET(
       "ID",
       "Name",
       "Email",
+      "Phone",
       "RSVP Date",
       "RSVP Time",
       ...Array.from(customFieldNames),
@@ -67,6 +68,7 @@ export async function GET(
         ID: attendee.id,
         Name: attendee.name,
         Email: attendee.email,
+        Phone: attendee.phone,
         "RSVP Date": formatDate(rsvpDate),
         "RSVP Time": rsvpDate.toLocaleTimeString(),
       };

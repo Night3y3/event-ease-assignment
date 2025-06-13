@@ -184,13 +184,14 @@ export async function submitRSVP(
   }
 
   // Extract custom field data
-  const { name, email, ...customFieldData } = data;
+  const { name, email, phone, ...customFieldData } = data;
 
   const rsvp = await prisma.rSVP.create({
     data: {
       eventId,
       name,
       email,
+      phone,
       customFieldData:
         Object.keys(customFieldData).length > 0 ? customFieldData : null,
     },
@@ -230,6 +231,7 @@ export async function submitRSVP(
     eventId: rsvp.eventId,
     name: rsvp.name,
     email: rsvp.email,
+    phone: rsvp.phone,
     customFieldData: rsvp.customFieldData as any,
     createdAt: rsvp.createdAt,
   };

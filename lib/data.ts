@@ -73,6 +73,7 @@ export async function getAllAttendees(
     eventId: rsvp.eventId,
     name: rsvp.name,
     email: rsvp.email,
+    phone: rsvp.phone,
     customFieldData: rsvp.customFieldData as any,
     createdAt: rsvp.createdAt,
     event: {
@@ -246,6 +247,7 @@ export async function getEventAttendees(eventId: string): Promise<RSVP[]> {
     eventId: rsvp.eventId,
     name: rsvp.name,
     email: rsvp.email,
+    phone: rsvp.phone,
     customFieldData: rsvp.customFieldData as any,
     createdAt: rsvp.createdAt,
   }));

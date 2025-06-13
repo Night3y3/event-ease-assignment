@@ -93,6 +93,7 @@ model RSVP {
   eventId         String
   name            String
   email           String
+  phone           String   @default("")
   customFieldData Json?    // Store custom field responses as JSON
   createdAt       DateTime @default(now())
 

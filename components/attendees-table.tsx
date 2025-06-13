@@ -6,10 +6,11 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Search, Download, Filter } from "lucide-react"
+import { Search, Download, Filter, Phone } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import type { AttendeeWithEvent } from "@/lib/types"
+import { motion } from "framer-motion"
 
 interface AttendeesTableProps {
     attendees: AttendeeWithEvent[]
@@ -22,16 +23,15 @@ export function AttendeesTable({ attendees, isAdmin = false }: AttendeesTablePro
     const [eventFilter, setEventFilter] = useState<string>("all")
     const [isExporting, setIsExporting] = useState(false)
 
-    // Get unique events for filter
     const uniqueEvents = Array.from(new Set(attendees.map((a) => a.event.id)))
         .map((id) => attendees.find((a) => a.event.id === id)?.event)
         .filter(Boolean)
 
-    // Filter attendees based on search and event filter
     const filteredAttendees = attendees.filter((attendee) => {
         const matchesSearch =
             attendee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             attendee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            attendee.phone.toLowerCase().includes(searchTerm.toLowerCase()) ||
             attendee.event.title.toLowerCase().includes(searchTerm.toLowerCase())
 
         const matchesEvent = eventFilter === "all" || attendee.event.id === eventFilter
@@ -83,7 +83,7 @@ export function AttendeesTable({ attendees, isAdmin = false }: AttendeesTablePro
                 <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
-                        placeholder="Search attendees, emails, or events..."
+                        placeholder="Search attendees, emails, phone numbers, or events..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="pl-10"
@@ -126,11 +126,20 @@ export function AttendeesTable({ attendees, isAdmin = false }: AttendeesTablePro
                     </div>
                 ) : (
                     filteredAttendees.map((attendee) => (
-                        <div key={attendee.id} className="border rounded-lg p-4 space-y-3">
+                        <motion.div
+                            key={attendee.id}
+                            className="border rounded-lg p-4 space-y-3"
+                            whileHover={{ scale: 1.02, y: -2 }}
+                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                        >
                             <div className="space-y-1">
                                 <h3 className="font-medium">{attendee.name}</h3>
                                 <p className="text-sm text-muted-foreground">{attendee.email}</p>
-                                <p className="text-sm font-medium">{attendee.event.title}</p>
+                                <div className="flex items-center gap-1 text-sm">
+                                    <Phone className="h-3 w-3 text-muted-foreground" />
+                                    <span>{attendee.phone}</span>
+                                </div>
+                                <p className="text-sm font-medium mt-2">{attendee.event.title}</p>
                             </div>
                             <div className="flex items-center justify-between text-sm">
                                 <span className="text-muted-foreground">{formatDate(attendee.createdAt)}</span>
@@ -144,18 +153,19 @@ export function AttendeesTable({ attendees, isAdmin = false }: AttendeesTablePro
                                     <div>{attendee.event.user.email}</div>
                                 </div>
                             )}
-                        </div>
+                        </motion.div>
                     ))
                 )}
             </div>
 
             {/* Desktop Table View */}
-            <div className="hidden md:block rounded-md border">
+            <div className="hidden md:block rounded-md border overflow-x-auto">
                 <Table>
                     <TableHeader>
                         <TableRow>
                             <TableHead>Name</TableHead>
                             <TableHead>Email</TableHead>
+                            <TableHead>Phone</TableHead>
                             <TableHead>Event</TableHead>
                             <TableHead>Event Date</TableHead>
                             <TableHead>RSVP Date</TableHead>
@@ -166,7 +176,7 @@ export function AttendeesTable({ attendees, isAdmin = false }: AttendeesTablePro
                     <TableBody>
                         {filteredAttendees.length === 0 ? (
                             <TableRow>
-                                <TableCell colSpan={isAdmin ? 7 : 6} className="h-24 text-center">
+                                <TableCell colSpan={isAdmin ? 8 : 7} className="h-24 text-center">
                                     No attendees found.
                                 </TableCell>
                             </TableRow>
@@ -175,6 +185,12 @@ export function AttendeesTable({ attendees, isAdmin = false }: AttendeesTablePro
                                 <TableRow key={attendee.id}>
                                     <TableCell className="font-medium">{attendee.name}</TableCell>
                                     <TableCell>{attendee.email}</TableCell>
+                                    <TableCell>
+                                        <div className="flex items-center gap-1">
+                                            <Phone className="h-3 w-3 text-muted-foreground" />
+                                            {attendee.phone}
+                                        </div>
+                                    </TableCell>
                                     <TableCell>
                                         <div className="max-w-[200px] truncate" title={attendee.event.title}>
                                             {attendee.event.title}

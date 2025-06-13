@@ -42,6 +42,7 @@ export interface RSVP {
   eventId: string;
   name: string;
   email: string;
+  phone: string;
   customFieldData?: Record<string, any>;
   createdAt: Date;
 }
